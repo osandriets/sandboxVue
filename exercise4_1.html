@@ -30,11 +30,12 @@
 <div id="exercise">
     <!-- 1) Start the Effect with the Button. The Effect should alternate the "highlight" or "shrink" class on each new setInterval tick (attach respective class to the div with id "effect" below) -->
     <div>
-        <button @click="startEffect = !startEffect">Start Effect</button>
+        <button @click="startEffects">Start Effect</button>
         <div id="effect" :class="className"></div>
     </div>
+
     <!-- 2) Create a couple of CSS classes and attach them via the array syntax -->
-    <div>I got no class :(</div>
+    <div :class="[{highlight: startEffect}, {shrink: !startEffect}]">I got no class :(</div>
     <!-- 3) Let the user enter a class (create some example classes) and attach it -->
     <div>
         <input type="text">
@@ -73,19 +74,24 @@
                 }
             }
         },
-        watch: {
-            startEffect: function () {
+        methods: {
+            startEffects: function () {
                 if(!this.startEffect){
-                    this.interval = setInterval( ()=> {
-                        this.colorEffect ? this.colorEffect = false : this.colorEffect = true;
-                    }, 1000);
+                    this.startEffect = true;
+
+                    if (!this.interval) {
+                        this.interval = setInterval( ()=> {
+                            this.colorEffect ? this.colorEffect = false : this.colorEffect = true;
+                        }, 1000);
+                    }
                 }
                 else{
+                    this.startEffect = false;
                     clearInterval(this.interval);
                     this.interval = null;
                 }
             }
-       }
+        }
     });
 </script>
 </body>
